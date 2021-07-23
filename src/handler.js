@@ -1,15 +1,26 @@
-'use strict'
+const articleRepository = require('./repository/article')
 
-module.exports.hello = async (event) => {
+const create = async event => {
+  const article = JSON.parse(event.body)
+  const result = await articleRepository.create(article)
+
   return {
     statusCode: 200,
-    body: JSON.stringify(
-      {
-        message: 'Go Serverless v2.0! Your function executed successfully!',
-        input: event,
-      },
-      null,
-      2
-    ),
+    body: JSON.stringify(result),
   }
+}
+
+const get = async event => {
+  const { id } = event.pathParameters
+  const result = await articleRepository.get(id)
+
+  return {
+    statusCode: 200,
+    body: JSON.stringify(result),
+  }
+}
+
+module.exports = {
+  create,
+  get,
 }
